@@ -112,7 +112,7 @@ function check_for_active_droplet {
     local droplet=$(doctl compute droplet list --tag-name "wireguard" | tail -n +2)
     if [[ -n $droplet ]]; then
         echo "Found droplet. Bringing up interface."
-        sudo wg-quick up wg0
+        start_wireguard_connection
         exit 0
     fi
     echo "No droplet found. Proceeding with creation."
