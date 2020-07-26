@@ -147,13 +147,14 @@ if [[ -f "/tmp/wg-output-old" ]]; then
 fi
 
 mv /tmp/wg-output /tmp/wg-output-old
+
 EOF
 
 # Make sure cron script is executable
 chmod +x /usr/local/bin/destroy-droplet
 
 # Setup cron to occur every 15 minutes
-echo -n "15 * * * * root /usr/local/bin/destroy-droplet" > /etc/cron.d/destroy-droplet
+echo "*/15 * * * * root /usr/local/bin/destroy-droplet" > /etc/cron.d/destroy-droplet
 
 # Setup initial output for comparison in cron
 wg | grep -v 'latest handshake' > /tmp/wg-output-old
