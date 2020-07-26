@@ -119,10 +119,10 @@ cat << 'EOF' > /usr/local/bin/destroy-droplet
 # /usr/bin/env bash
 wg | grep -v 'latest handshake' > /tmp/wg-output
 
-if [[ -f "/tmp/wg-output-old" ]]; then
+if [ -f "/tmp/wg-output-old" ]; then
 
     # If no difference, then we kill the server
-    if [[ -z $(diff /tmp/wg-output /tmp/wg-output-old) ]]; then
+    if [ -z $(diff /tmp/wg-output /tmp/wg-output-old) ]; then
 
         # Get the host name
         machine_name=$(hostname)
