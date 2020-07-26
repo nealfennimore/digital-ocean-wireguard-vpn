@@ -209,6 +209,13 @@ function add_client_to_server {
 }
 
 #######################################
+# Starts connection to droplet via wireguard
+#######################################
+function start_wireguard_connection {
+    sudo wg-quick up wg0
+}
+
+#######################################
 # Initialization function
 #######################################
 function init {
@@ -219,7 +226,8 @@ function init {
     wait_for_wireguard
     create_wireguard_client
     add_client_to_server
-    sudo wg-quick up wg0
+    start_wireguard_connection
+    exit 0
 }
 
 init
