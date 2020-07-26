@@ -63,6 +63,20 @@ function exec_droplet {
 }
 
 #######################################
+# Check to see if we have a droplet already
+#######################################
+function check_for_active_droplet {
+    echo "Checking for previous Wireguard droplet..."
+    local droplet=$(doctl compute droplet list --tag-name "wireguard" | tail -n +2)
+    if [[ -n $droplet ]]; then
+        echo "Found droplet. Bringing up interface."
+        sudo wg-quick up wg0
+        exit 0
+    fi
+    echo "No droplet found. Proceeding with creation."
+}
+
+#######################################
 # Creates a new wireguard droplet
 #######################################
 function create_droplet {
@@ -156,6 +170,7 @@ function add_client_to_server {
 # Initialization function
 #######################################
 function init {
+    check_for_active_droplet
     create_droplet
     wait_for_ssh
     authorize_ssh_connection
