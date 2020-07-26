@@ -111,8 +111,10 @@ systemctl enable wg-quick@wg0
 ###    CRON     ###
 ###################
 
+# Install cron dependencies
 apt install jq -y
 
+# Create cron script
 cat << 'EOF' > /usr/local/bin/destroy-droplet
 # /usr/bin/env bash
 wg | grep -v 'latest handshake' > /tmp/wg-output
@@ -147,5 +149,11 @@ fi
 mv /tmp/wg-output /tmp/wg-output-old
 EOF
 
+# Make sure cron script is executable
 chmod +x /usr/local/bin/destroy-droplet
+
+# Setup cron to occur every 15 minutes
 echo -n "15 * * * * root /usr/local/bin/destroy-droplet" > /etc/cron.d/destroy-droplet
+
+# Setup initial output for comparison in cron
+wg | grep -v 'latest handshake' > /tmp/wg-output-old
